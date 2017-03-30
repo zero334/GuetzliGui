@@ -1,0 +1,8 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="GuetzliGui:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/GuetzliGui_jar</output-path>
+    <root id="archive" name="GuetzliGui.jar">
+      <element id="module-output" name="GuetzliGui" />
+    </root>
+  </artifact>
+</component>

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressIndicator?>
+<?import javafx.scene.control.RadioMenuItem?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+
+
+<?import java.lang.Integer?>
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="305.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Controller">
+   <children>
+      <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <menus>
+          <Menu mnemonicParsing="false" text="File">
+            <items>
+                  <MenuItem mnemonicParsing="false" text="Check for update" />
+            </items>
+          </Menu>
+            <Menu mnemonicParsing="false" text="Language">
+              <items>
+                  <RadioMenuItem mnemonicParsing="false" onAction="#changeGuiLangToEnglish" text="English" />
+                  <RadioMenuItem mnemonicParsing="false" onAction="#changeGuiLangToGerman" text="German" />
+              </items>
+            </Menu>
+          <Menu mnemonicParsing="false" text="Help">
+            <items>
+              <MenuItem mnemonicParsing="false" text="About" />
+                  <MenuItem mnemonicParsing="false" text="Project page" />
+            </items>
+          </Menu>
+        </menus>
+      </MenuBar>
+      <AnchorPane layoutX="22.0" layoutY="47.0">
+         <children>
+            <Button fx:id="btnInputFile" mnemonicParsing="false" onAction="#openInputFile" onDragDropped="#inputFileDropped" prefHeight="25.0" prefWidth="114.0" text="Input file">
+               <cursor>
+                   <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <Button fx:id="btnOutputFile" layoutY="40.0" mnemonicParsing="false" onAction="#openOutputFile" onDragDropped="#outputFileDropped" prefHeight="25.0" prefWidth="114.0" text="Output file">
+               <cursor>
+                   <Cursor fx:constant="HAND" />
+               </cursor>
+            </Button>
+            <TextField fx:id="lblInputFile" editable="false" layoutX="126.0" layoutY="2.0" onDragDropped="#inputFileDropped" prefHeight="25.0" prefWidth="262.0" promptText="Input file" />
+            <TextField fx:id="lblOutputFile" editable="false" layoutX="126.0" layoutY="39.0" onDragDropped="#outputFileDropped" prefHeight="25.0" prefWidth="262.0" promptText="Output file" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="159.0" layoutY="262.0">
+         <children>
+            <Button fx:id="btnStartEncode" layoutY="4.5576934814453125" mnemonicParsing="false" onAction="#startEncodeing" prefHeight="25.0" prefWidth="114.0" text="Encode">
+                <cursor>
+                    <Cursor fx:constant="HAND" />
+                </cursor>
+            </Button>
+            <ProgressIndicator fx:id="progIndEncodeingProgress" layoutX="120.0" layoutY="4.5576934814453125" prefHeight="25.0" prefWidth="24.0" visible="false" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="21.0" layoutY="153.0">
+         <children>
+            <ListView fx:id="lstViewImageProperties" prefHeight="99.0" prefWidth="388.0" />
+         </children>
+      </AnchorPane>
+      <AnchorPane layoutX="22.0" layoutY="122.0">
+         <children>
+            <Label layoutY="4.0" prefHeight="17.0" prefWidth="46.0" text="Quality:" />
+             <fx:define>
+                 <Integer fx:id="min" fx:value="84"/>
+                 <Integer fx:id="max" fx:value="100"/>
+                 <Integer fx:id="initialValue" fx:value="84"/>
+             </fx:define>
+            <Spinner fx:id="spnEncodeingQuality" editable="true" layoutX="46.0" prefHeight="25.0" prefWidth="59.0" min="$min" max="$max" initialValue="$initialValue"/>
+         </children>
+      </AnchorPane>
+   </children>
+</AnchorPane>
