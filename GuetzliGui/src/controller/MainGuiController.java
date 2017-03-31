@@ -1,5 +1,6 @@
-package com;
+package controller;
 
+import com.*;
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
