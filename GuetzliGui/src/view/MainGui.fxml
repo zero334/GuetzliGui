@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-
 <?import javafx.scene.control.*?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.layout.*?>
 <?import java.lang.Integer?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="305.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.Controller">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="332.0" prefWidth="430.0" xmlns="http://javafx.com/javafx/8.0.121" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.MainGuiController">
    <children>
       <MenuBar layoutY="2.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <menus>
@@ -22,7 +21,7 @@
             </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
-              <MenuItem mnemonicParsing="false" text="About" />
+                <MenuItem onAction="#openAboutWindow" mnemonicParsing="false" text="About" />
                 <MenuItem onAction="#openProjectPage" mnemonicParsing="false" text="Project page" />
                 <MenuItem onAction="#openGuetzliPage" mnemonicParsing="false" text="Guetzli page" />
             </items>
@@ -45,7 +44,7 @@
             <TextField fx:id="lblOutputFile" editable="false" layoutX="126.0" layoutY="39.0" onDragDropped="#outputFileDropped" prefHeight="25.0" prefWidth="262.0" promptText="Output file" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="159.0" layoutY="262.0">
+      <AnchorPane layoutX="159.0" layoutY="285.0">
          <children>
             <Button fx:id="btnStartEncode" layoutY="4.5576934814453125" mnemonicParsing="false" onAction="#startEncodeing" prefHeight="25.0" prefWidth="114.0" text="Encode">
                 <cursor>
@@ -55,14 +54,14 @@
             <ProgressIndicator fx:id="progIndEncodeingProgress" layoutX="120.0" layoutY="4.5576934814453125" prefHeight="25.0" prefWidth="24.0" visible="false" />
          </children>
       </AnchorPane>
-      <AnchorPane layoutX="21.0" layoutY="153.0">
+      <AnchorPane layoutX="21.0" layoutY="155.0">
          <children>
-            <ListView fx:id="lstViewImageProperties" prefHeight="99.0" prefWidth="388.0" />
+            <ListView fx:id="lstViewImageProperties" prefHeight="127.0" prefWidth="388.0" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="22.0" layoutY="122.0">
          <children>
-            <Label layoutY="4.0" prefHeight="17.0" prefWidth="46.0" text="Quality:" />
+            <Label layoutY="4.0" prefHeight="17.0" prefWidth="76.0" text="Quality" />
              <fx:define>
                  <Integer fx:id="min" fx:value="84"/>
                  <Integer fx:id="max" fx:value="100"/>

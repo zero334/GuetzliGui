@@ -6,10 +6,14 @@ import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.input.DragEvent;
 import javafx.stage.FileChooser;
+import javafx.stage.Stage;
 import javafx.util.Duration;
 import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
@@ -24,7 +28,7 @@ import java.net.URL;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class Controller implements Initializable{
+public class MainGuiController implements Initializable {
 
     private ResourceBundle bundle;
     private Locale locale;
@@ -85,11 +89,12 @@ public class Controller implements Initializable{
         final FileChooser fileChooser = new FileChooser();
         fileChooser.getExtensionFilters().add(extFilter);
 
-        final File selectedInputFile = fileChooser.showOpenDialog(null); // TODO SHOW Save dialog beim speichern benutzen!!
+        final File selectedInputFile = fileChooser.showOpenDialog(null);
 
         if (selectedInputFile != null && selectedInputFile.exists()) {
             lblInputFile.setText(selectedInputFile.getAbsolutePath());
             this.userValueStore.setInput(selectedInputFile);
+            this.getFileProperties(selectedInputFile);
         }
     }
 
@@ -105,6 +110,21 @@ public class Controller implements Initializable{
         if (selectedOutputFile != null && selectedOutputFile.exists()) {
             lblInputFile.setText(selectedOutputFile.getAbsolutePath());
             this.userValueStore.setOutput(selectedOutputFile);
+        }
+    }
+
+    @FXML
+    void openAboutWindow(ActionEvent event) {
+        Parent root;
+        try {
+            root = FXMLLoader.load(Main.class.getResource("../view/About.fxml"));
+            Stage stage = new Stage();
+            stage.setTitle("About");
+            stage.setScene(new Scene(root));
+            stage.show();
+        }
+        catch (IOException e) {
+            e.printStackTrace();
         }
     }
 
@@ -160,7 +180,6 @@ public class Controller implements Initializable{
         final String guetzliPath = "C:\\Gue\\bin.exe"; // TODO
         final String qualityString = "--quality " + userValueStore.getQuality();
         final String input = userValueStore.getInput().getAbsolutePath();
-        getFileProperties(userValueStore.getInput());
         final String output = userValueStore.getInput().getAbsolutePath();
 
         final CommandLine cmdLine = CommandLine.parse(guetzliPath + ' ' + qualityString + ' ' + input + ' ' + output);
@@ -178,7 +197,7 @@ public class Controller implements Initializable{
         }
     }
 
-    void getFileProperties(File fileTocheck) {
+    void getFileProperties(final File fileTocheck) {
         final double bytes = fileTocheck.length();
         final double kilobytes = (bytes / 1024);
 
@@ -198,7 +217,7 @@ public class Controller implements Initializable{
         megaPixel = Math.round(megaPixel * 10) / 10.0;
 
         final double estimatedTime = megaPixel;
-        final double memoryUsage = megaPixel * 300; // In MB
+        final int memoryUsage = (int)(megaPixel * 300); // In MB
 
         final ObservableList<String> items = FXCollections.observableArrayList (
                 "Image Width: " + width,

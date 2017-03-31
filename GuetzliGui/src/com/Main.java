@@ -24,13 +24,14 @@ public class Main extends Application {
 
         try {
             // View
-            final FXMLLoader loader = new FXMLLoader(Main.class.getResource("MainGui.fxml"));
+            final FXMLLoader loader = new FXMLLoader(Main.class.getResource("../view/MainGui.fxml"));
             final AnchorPane pane = loader.load();
 
             // Scene on stage
             final Scene scene = new Scene(pane);
             scene.getStylesheets().add(getClass().getResource("validation.css").toExternalForm());
 
+            primaryStage.setTitle("Guetzli Gui");
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
