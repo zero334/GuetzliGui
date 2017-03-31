@@ -110,6 +110,12 @@ public class Controller implements Initializable{
     }
 
     @FXML
+    void openProjectPage(ActionEvent event) {
+        OpenWebSite projectPage = new OpenWebSite("https://github.com/zero334/GuetzliGui");
+        projectPage.openSite();
+    }
+
+    @FXML
     void outputFileDropped(DragEvent event) {
         System.out.println("outputFileDropped");
     }
