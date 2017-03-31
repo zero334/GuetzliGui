@@ -1,4 +1,5 @@
 package com;
+
 import javafx.animation.FadeTransition;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -7,8 +8,6 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-import javafx.scene.control.Button;
-import javafx.scene.control.TextField;
 import javafx.scene.input.DragEvent;
 import javafx.stage.FileChooser;
 import javafx.util.Duration;
@@ -111,8 +110,14 @@ public class Controller implements Initializable{
 
     @FXML
     void openProjectPage(ActionEvent event) {
-        OpenWebSite projectPage = new OpenWebSite("https://github.com/zero334/GuetzliGui");
+        final OpenWebSite projectPage = new OpenWebSite("https://github.com/zero334/GuetzliGui");
         projectPage.openSite();
+    }
+
+    @FXML
+    void openGuetzliPage(ActionEvent event) {
+        final OpenWebSite guetzliPage = new OpenWebSite("https://github.com/google/guetzli");
+        guetzliPage.openSite();
     }
 
     @FXML
