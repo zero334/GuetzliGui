@@ -2,8 +2,6 @@ package controller;
 
 import com.*;
 import javafx.animation.FadeTransition;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.css.PseudoClass;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -21,11 +19,10 @@ import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
 
-import javax.imageio.ImageIO;
-import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
+import java.util.List;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
@@ -39,13 +36,7 @@ public class MainGuiController implements Initializable {
     private Button btnInputFile;
 
     @FXML
-    private Button btnOutputFile;
-
-    @FXML
-    private TextField lblInputFile;
-
-    @FXML
-    private TextField lblOutputFile;
+    private TextField txtFieldInputFile, txtFieldOutputFile;
 
     @FXML
     private Button btnStartEncode;
@@ -59,12 +50,21 @@ public class MainGuiController implements Initializable {
     @FXML
     private Spinner<Integer> spnEncodeingQuality;
 
+    @FXML
+    private RadioMenuItem radioLanguageEnglish, radioLanguageGerman;
+
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Start!");
         IntegerStringConverter.createFor(spnEncodeingQuality);
         // TODO Write config
+
+        RegisterTransferMode.registerMode(btnInputFile);
+        RegisterTransferMode.registerMode(txtFieldInputFile);
+
+        radioLanguageEnglish.setSelected(true);
     }
 
     @FXML
@@ -78,8 +78,21 @@ public class MainGuiController implements Initializable {
     }
 
     @FXML
-    void inputFileDropped(DragEvent event) {
+    void inputFileDropped(final DragEvent event) {
 
+        final List<File> droppedElement = event.getDragboard().getFiles();
+        if (droppedElement.isEmpty()) {
+            return;
+        }
+
+        final String fileExtention = Utils.getExtension(droppedElement.get(0).getName().toLowerCase());
+        if (!fileExtention.equals("png") && !fileExtention.equals("jpg")) {
+            return;
+        }
+
+        txtFieldInputFile.setText(droppedElement.get(0).getAbsolutePath());
+        this.userValueStore.setInput(droppedElement.get(0));
+        Utils.getFileProperties(droppedElement.get(0), this.lstViewImageProperties);
     }
 
     @FXML
@@ -93,9 +106,9 @@ public class MainGuiController implements Initializable {
         final File selectedInputFile = fileChooser.showOpenDialog(null);
 
         if (selectedInputFile != null && selectedInputFile.exists()) {
-            lblInputFile.setText(selectedInputFile.getAbsolutePath());
+            txtFieldInputFile.setText(selectedInputFile.getAbsolutePath());
             this.userValueStore.setInput(selectedInputFile);
-            this.getFileProperties(selectedInputFile);
+            Utils.getFileProperties(selectedInputFile, this.lstViewImageProperties);
         }
     }
 
@@ -109,7 +122,7 @@ public class MainGuiController implements Initializable {
         final File selectedOutputFile = fileChooser.showSaveDialog(null);
 
         if (selectedOutputFile != null && selectedOutputFile.exists()) {
-            lblInputFile.setText(selectedOutputFile.getAbsolutePath());
+            txtFieldInputFile.setText(selectedOutputFile.getAbsolutePath());
             this.userValueStore.setOutput(selectedOutputFile);
         }
     }
@@ -124,7 +137,7 @@ public class MainGuiController implements Initializable {
             stage.setScene(new Scene(root));
             stage.show();
         }
-        catch (IOException e) {
+        catch (final IOException e) {
             e.printStackTrace();
         }
     }
@@ -142,11 +155,6 @@ public class MainGuiController implements Initializable {
     }
 
     @FXML
-    void outputFileDropped(DragEvent event) {
-        System.out.println("outputFileDropped");
-    }
-
-    @FXML
     void startEncodeing(ActionEvent event) {
 
         if (!userValueStore.isComplete()) {
@@ -154,25 +162,25 @@ public class MainGuiController implements Initializable {
             final PseudoClass errorClass = PseudoClass.getPseudoClass("error");
 
             if (userValueStore.getInput() == null || !userValueStore.getInput().exists()) {
-                lblInputFile.pseudoClassStateChanged(errorClass, true);
-                final FadeTransition ftInputFile = new FadeTransition(Duration.millis(450), lblInputFile);
+                txtFieldInputFile.pseudoClassStateChanged(errorClass, true);
+                final FadeTransition ftInputFile = new FadeTransition(Duration.millis(450), txtFieldInputFile);
                 ftInputFile.setFromValue(1.0);
                 ftInputFile.setToValue(0.1);
                 ftInputFile.setCycleCount(4);
                 ftInputFile.setAutoReverse(true);
                 ftInputFile.play();
-                ftInputFile.onFinishedProperty().set(e -> lblInputFile.pseudoClassStateChanged(errorClass, false));
+                ftInputFile.onFinishedProperty().set(e -> txtFieldInputFile.pseudoClassStateChanged(errorClass, false));
             }
 
             if (userValueStore.getOutput() == null || !userValueStore.getOutput().exists()) {
-                lblOutputFile.pseudoClassStateChanged(errorClass, true);
-                final FadeTransition ftOutputFile = new FadeTransition(Duration.millis(450), lblOutputFile);
+                txtFieldOutputFile.pseudoClassStateChanged(errorClass, true);
+                final FadeTransition ftOutputFile = new FadeTransition(Duration.millis(450), txtFieldOutputFile);
                 ftOutputFile.setFromValue(1.0);
                 ftOutputFile.setToValue(0.1);
                 ftOutputFile.setCycleCount(4);
                 ftOutputFile.setAutoReverse(true);
                 ftOutputFile.play();
-                ftOutputFile.onFinishedProperty().set(e -> lblOutputFile.pseudoClassStateChanged(errorClass, false));
+                ftOutputFile.onFinishedProperty().set(e -> txtFieldOutputFile.pseudoClassStateChanged(errorClass, false));
             }
             return;
         }
@@ -196,38 +204,6 @@ public class MainGuiController implements Initializable {
         } catch (final IOException ex) {
             System.err.println(ex.getMessage());
         }
-    }
-
-    void getFileProperties(final File fileTocheck) {
-        final double bytes = fileTocheck.length();
-        final double kilobytes = (bytes / 1024);
-
-        int width = 0, height = 0;
-        try {
-            BufferedImage bimg = ImageIO.read(fileTocheck);
-            width = bimg.getWidth();
-            height = bimg.getHeight();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-
-        final long pixelOverall = width * height;
-        double megaPixel = pixelOverall / 1024000.0f;
-        megaPixel = Math.round(megaPixel * 10) / 10.0;
-
-        final double estimatedTime = megaPixel;
-        final int memoryUsage = (int)(megaPixel * 300); // In MB
-
-        final ObservableList<String> items = FXCollections.observableArrayList (
-                "Image Width: " + width,
-                        "Image Height: " + height,
-                        "Megapixel(s): " + megaPixel,
-                        "Estimated time: " + estimatedTime + " Minutes",
-                        "Memory usage: " + memoryUsage + " MB");
-
-        lstViewImageProperties.setItems(items);
     }
 
 

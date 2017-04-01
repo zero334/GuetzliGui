@@ -10,11 +10,10 @@ import org.apache.commons.exec.ExecuteException;
  */
 public class PrintResultHandler extends DefaultExecuteResultHandler {
 
-    private Button btn;
-    private ProgressIndicator progressIndicator;
+    private final Button btn;
+    private final ProgressIndicator progressIndicator;
 
     public PrintResultHandler(final Button button, final ProgressIndicator progressIndicator) {
-
        this.btn = button;
        this.progressIndicator = progressIndicator;
     }

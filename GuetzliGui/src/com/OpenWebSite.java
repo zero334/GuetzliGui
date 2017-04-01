@@ -1,6 +1,6 @@
 package com;
 
-import java.awt.Desktop;
+import java.awt.*;
 import java.net.URI;
 
 
@@ -9,7 +9,7 @@ import java.net.URI;
  */
 public class OpenWebSite {
 
-    private String url;
+    private final String url;
 
     public OpenWebSite(final String url) {
         this.url = url;
@@ -19,7 +19,7 @@ public class OpenWebSite {
         if (Desktop.isDesktopSupported()) {
             try {
                 Desktop.getDesktop().browse(new URI(this.url));
-            } catch (Exception ex) {
+            } catch (final Exception ex) {
                 ex.printStackTrace();
             }
         }

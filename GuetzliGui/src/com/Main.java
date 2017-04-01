@@ -15,13 +15,12 @@ public class Main extends Application {
     }
 
     @Override
-    public void start(Stage primaryStage) throws Exception{
+    public void start(final Stage primaryStage) throws Exception{
         this.primaryStage = primaryStage;
-        mainWindow();
+        this.mainWindow();
     }
 
     private void mainWindow() {
-
         try {
             // View
             final FXMLLoader loader = new FXMLLoader(Main.class.getResource("../view/MainGui.fxml"));
@@ -29,7 +28,7 @@ public class Main extends Application {
 
             // Scene on stage
             final Scene scene = new Scene(pane);
-            scene.getStylesheets().add(getClass().getResource("validation.css").toExternalForm());
+            scene.getStylesheets().add(getClass().getResource("../view/validation.css").toExternalForm());
 
             primaryStage.setTitle("Guetzli Gui");
             primaryStage.setScene(scene);
