@@ -185,24 +185,24 @@ public class MainGuiController implements Initializable {
             return;
         }
 
+        if (Utils.getOsType().equals("Windows")) { // TODO Add support for mac and Linux
+            final String guetzliPath = "C:\\Gue\\bin.exe";
+            final String qualityString = "--quality " + userValueStore.getQuality();
+            final String input = userValueStore.getInput().getAbsolutePath();
+            final String output = userValueStore.getInput().getAbsolutePath();
 
-        final String guetzliPath = "C:\\Gue\\bin.exe"; // TODO
-        final String qualityString = "--quality " + userValueStore.getQuality();
-        final String input = userValueStore.getInput().getAbsolutePath();
-        final String output = userValueStore.getInput().getAbsolutePath();
+            final CommandLine cmdLine = CommandLine.parse(guetzliPath + ' ' + qualityString + ' ' + input + ' ' + output);
 
-        final CommandLine cmdLine = CommandLine.parse(guetzliPath + ' ' + qualityString + ' ' + input + ' ' + output);
+            final Executor executor = new DefaultExecutor();
+            btnStartEncode.setDisable(true);
+            progIndEncodeingProgress.setVisible(true);
+            DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progIndEncodeingProgress);
 
-        final Executor executor = new DefaultExecutor();
-        System.out.println("[print] Executing non-blocking print job  ...");
-        btnStartEncode.setDisable(true);
-        progIndEncodeingProgress.setVisible(true);
-        DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progIndEncodeingProgress);
-
-        try {
-            executor.execute(cmdLine, resultHandler);
-        } catch (final IOException ex) {
-            System.err.println(ex.getMessage());
+            try {
+                executor.execute(cmdLine, resultHandler);
+            } catch (final IOException ex) {
+                System.err.println(ex.getMessage());
+            }
         }
     }
 
