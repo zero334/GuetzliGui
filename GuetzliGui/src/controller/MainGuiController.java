@@ -186,7 +186,14 @@ public class MainGuiController implements Initializable {
         }
 
         if (Utils.getOsType().equals("Windows")) { // TODO Add support for mac and Linux
-            final String guetzliPath = "C:\\Gue\\bin.exe";
+
+            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "guetzli_windows_x86-64.exe";
+            if (! new File(guetzliPath).exists()) {
+                System.err.println("Guetzli was not found.");
+                return;
+            }
+
+
             final String qualityString = "--quality " + userValueStore.getQuality();
             final String input = userValueStore.getInput().getAbsolutePath();
             final String output = userValueStore.getInput().getAbsolutePath();
