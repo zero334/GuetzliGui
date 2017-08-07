@@ -11,7 +11,7 @@ public class UserValueStore {
     int quality = 84;
 
     public boolean isComplete() {
-        return (input != null && input.exists()) && (output != null && output.exists());
+        return (input != null && input.exists()) && (output != null);
     }
 
     public File getInput() {

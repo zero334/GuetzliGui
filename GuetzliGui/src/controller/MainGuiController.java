@@ -24,6 +24,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.List;
 import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
@@ -98,10 +99,8 @@ public class MainGuiController implements Initializable {
     @FXML
     void openInputFile(ActionEvent event) {
         System.out.println("Open input file!");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Image files (*.png, *.jpg)", "*.png", "*.jpg");
-
         final FileChooser fileChooser = new FileChooser();
-        fileChooser.getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files (*.png, *.jpg)", "*.png", "*.jpg"));
 
         final File selectedInputFile = fileChooser.showOpenDialog(null);
 
@@ -115,15 +114,21 @@ public class MainGuiController implements Initializable {
     @FXML
     void openOutputFile(ActionEvent event) {
         System.out.println("Open output file!");
-        FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Jpg files", "*.jpg");
         final FileChooser fileChooser = new FileChooser();
-        fileChooser .getExtensionFilters().add(extFilter);
+        fileChooser.getExtensionFilters().add(new FileChooser.ExtensionFilter("Image files", "*.jpg"));
 
         final File selectedOutputFile = fileChooser.showSaveDialog(null);
 
-        if (selectedOutputFile != null && selectedOutputFile.exists()) {
-            txtFieldInputFile.setText(selectedOutputFile.getAbsolutePath());
-            this.userValueStore.setOutput(selectedOutputFile);
+        if (selectedOutputFile != null) {
+
+            String absolutePath = selectedOutputFile.getAbsolutePath();
+            if (absolutePath.endsWith(".jpg")) {
+                this.userValueStore.setOutput(selectedOutputFile);
+            } else {
+                absolutePath += ".jpg";
+                this.userValueStore.setOutput(new File(absolutePath));
+            }
+            txtFieldOutputFile.setText(absolutePath);
         }
     }
 
@@ -172,7 +177,7 @@ public class MainGuiController implements Initializable {
                 ftInputFile.onFinishedProperty().set(e -> txtFieldInputFile.pseudoClassStateChanged(errorClass, false));
             }
 
-            if (userValueStore.getOutput() == null || !userValueStore.getOutput().exists()) {
+            if (userValueStore.getOutput() == null) {
                 txtFieldOutputFile.pseudoClassStateChanged(errorClass, true);
                 final FadeTransition ftOutputFile = new FadeTransition(Duration.millis(450), txtFieldOutputFile);
                 ftOutputFile.setFromValue(1.0);
@@ -188,9 +193,18 @@ public class MainGuiController implements Initializable {
         if (Utils.getOsType().equals("Windows")) { // TODO Add support for mac and Linux
 
             final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "guetzli_windows_x86-64.exe";
-            if (! new File(guetzliPath).exists()) {
-                System.err.println("Guetzli was not found.");
-                return;
+            
+            while (! new File(guetzliPath).exists()) {
+                final Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Guetzli was not found. Download Guetzli?");
+                alert.setTitle("Guetzli not found");
+                alert.setHeaderText(null);
+
+                final Optional<ButtonType> redownloadGuetzli = alert.showAndWait();
+                if (redownloadGuetzli.get() == ButtonType.OK) {
+                    // TODO: Redownload and try again.
+                } else {
+                    return;
+                }
             }
 
 
@@ -203,7 +217,7 @@ public class MainGuiController implements Initializable {
             final Executor executor = new DefaultExecutor();
             btnStartEncode.setDisable(true);
             progIndEncodeingProgress.setVisible(true);
-            DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progIndEncodeingProgress);
+            final DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progIndEncodeingProgress);
 
             try {
                 executor.execute(cmdLine, resultHandler);
