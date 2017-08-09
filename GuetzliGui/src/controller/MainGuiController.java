@@ -18,7 +18,6 @@ import org.apache.commons.exec.CommandLine;
 import org.apache.commons.exec.DefaultExecuteResultHandler;
 import org.apache.commons.exec.DefaultExecutor;
 import org.apache.commons.exec.Executor;
-
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -192,8 +191,8 @@ public class MainGuiController implements Initializable {
 
         if (Utils.getOsType().equals("Windows")) { // TODO Add support for mac and Linux
 
-            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "guetzli_windows_x86-64.exe";
-            
+            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "guetzli_windows_x86-64.exe"; // TODO x32
+
             while (! new File(guetzliPath).exists()) {
                 final Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Guetzli was not found. Download Guetzli?");
                 alert.setTitle("Guetzli not found");
@@ -240,5 +239,9 @@ public class MainGuiController implements Initializable {
         locale = new Locale(lang);
         bundle = ResourceBundle.getBundle("languages.language", locale);
         // label.setText(bundle.getString("label"));
+    }
+
+    public void checkForUpdate(ActionEvent actionEvent) {
+        DownloadLatestVersion.download(true);
     }
 }

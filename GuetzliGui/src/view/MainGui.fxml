@@ -10,7 +10,7 @@
         <menus>
           <Menu mnemonicParsing="false" text="File">
             <items>
-                  <MenuItem mnemonicParsing="false" text="Check for update" />
+                  <MenuItem onAction="#checkForUpdate" mnemonicParsing="false" text="Check for update" />
             </items>
           </Menu>
             <Menu mnemonicParsing="false" text="Language">
