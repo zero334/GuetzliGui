@@ -191,21 +191,24 @@ public class MainGuiController implements Initializable {
 
         if (Utils.getOsType().equals("Windows")) { // TODO Add support for mac and Linux
 
-            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + "guetzli_windows_x86-64.exe"; // TODO x32
+            String binaryName;
+            if (Utils.windowsIs64Bit()) {
+                binaryName = "guetzli_windows_x86-64.exe";
+            } else {
+                binaryName = "guetzli_windows_x86.exe";
+            }
+
+            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + binaryName;
 
             while (! new File(guetzliPath).exists()) {
-                final Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "Guetzli was not found. Download Guetzli?");
-                alert.setTitle("Guetzli not found");
-                alert.setHeaderText(null);
-
-                final Optional<ButtonType> redownloadGuetzli = alert.showAndWait();
-                if (redownloadGuetzli.get() == ButtonType.OK) {
-                    // TODO: Redownload and try again.
+                final Optional<ButtonType> redownloadGuetzli = Utils.alertBox("Guetzli not found", "Guetzli was not found. Download Guetzli?", Alert.AlertType.CONFIRMATION);
+                if (redownloadGuetzli.isPresent() && redownloadGuetzli.get() == ButtonType.OK) {
+                    // TODO: Test
+                    DownloadLatestVersion.download(true);
                 } else {
                     return;
                 }
             }
-
 
             final String qualityString = "--quality " + userValueStore.getQuality();
             final String input = userValueStore.getInput().getAbsolutePath();

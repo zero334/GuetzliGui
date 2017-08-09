@@ -11,11 +11,12 @@ import java.util.ArrayList;
 /**
  * Created by zero334 on 08.08.2017.
  */
+@SuppressWarnings("DefaultFileTemplate")
 public class HttpRequest {
 
-    String url;
-    String charset = java.nio.charset.StandardCharsets.UTF_8.name();
-    ArrayList<Pair<String, String>> query;
+    private String url;
+    private String charset = java.nio.charset.StandardCharsets.UTF_8.name();
+    private ArrayList<Pair<String, String>> query;
 
     public HttpRequest(final String url, final ArrayList<Pair<String, String>> query) {
         this.url = url;
@@ -39,8 +40,8 @@ public class HttpRequest {
     }
 
     public String httpGet() {
-        final String response = this.fireHttpGet(this.url, this.charset, this.query);
-        return response;
+        // Return the response
+        return this.fireHttpGet(this.url, this.charset, this.query);
     }
 
     private String fireHttpGet(final String url, final String charset, ArrayList<Pair<String, String>> query) {
@@ -70,12 +71,12 @@ public class HttpRequest {
             }
         }
 
-        String parsedResponse = "";
+        StringBuilder parsedResponse = new StringBuilder();
         if (responseCharset != null) {
             try {
                 try (BufferedReader reader = new BufferedReader(new InputStreamReader(response, responseCharset))) {
                     for (String line; (line = reader.readLine()) != null;) {
-                        parsedResponse += line;
+                        parsedResponse.append(line);
                     }
                 }
             } catch (IOException e) {
@@ -83,7 +84,7 @@ public class HttpRequest {
             }
         }
 
-        return parsedResponse;
+        return parsedResponse.toString();
     }
 
     private String parseQuery(ArrayList<Pair<String, String>> query) {
@@ -91,26 +92,20 @@ public class HttpRequest {
             return "";
         }
 
-        String queryString = "";
+        StringBuilder queryString = new StringBuilder();
         for (final Pair<String, String> queryElements : query) {
             if (!queryElements.getFirst().isEmpty() && !queryElements.getSecond().isEmpty()) {
-                final StringBuilder buildQueryString = new StringBuilder(queryElements.getFirst());
-                buildQueryString.append('=');
-                buildQueryString.append(queryElements.getSecond());
-                buildQueryString.append('&');
-
-                queryString += buildQueryString.toString();
+                queryString.append(queryElements.getFirst()).append('=').append(queryElements.getSecond()).append('&');
             }
         }
 
         // Cut last & char
         if ((queryString.length() > 0) && (queryString.charAt(queryString.length() - 1) == '&')) {
-            queryString = queryString.substring(0, queryString.length() - 1);
+            return '?' + queryString.substring(0, queryString.length() - 1);
         }
-
-        return '?' + queryString;
+        
+        return '?' + queryString.toString();
     }
-
 }
 
 class Pair<L,R> {

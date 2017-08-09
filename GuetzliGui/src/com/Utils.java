@@ -2,12 +2,15 @@ package com;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.ListView;
 
 import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Optional;
 
 /**
  * Created by zero334 on 31.03.17.
@@ -29,12 +32,12 @@ public class Utils {
         }
     }
 
-    public static boolean windowsBitness() {
-        boolean is64bit = false;
+    public static boolean windowsIs64Bit() {
+        boolean is64bit;
         if (System.getProperty("os.name").contains("Windows")) {
             is64bit = (System.getenv("ProgramFiles(x86)") != null);
         } else {
-            is64bit = (System.getProperty("os.arch").indexOf("64") != -1);
+            is64bit = (System.getProperty("os.arch").contains("64"));
         }
         return is64bit;
     }
@@ -81,5 +84,17 @@ public class Utils {
                 "Memory usage: " + memoryUsage + " MB");
 
         displayContainer.setItems(items);
+    }
+
+    public static Optional<ButtonType> alertBox(final String title, final String message, Alert.AlertType alertType) {
+        if (alertType == null) {
+            alertType = Alert.AlertType.NONE;
+        }
+
+        final Alert alert = new Alert(alertType, message);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+
+        return  alert.showAndWait();
     }
 }
