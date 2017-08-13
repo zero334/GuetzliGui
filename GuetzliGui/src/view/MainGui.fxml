@@ -40,8 +40,8 @@
                    <Cursor fx:constant="HAND" />
                </cursor>
             </Button>
-            <TextField fx:id="txtFieldInputFile" editable="false" layoutX="126.0" layoutY="2.0" onDragDropped="#inputFileDropped" prefHeight="25.0" prefWidth="262.0" promptText="Input file" />
-            <TextField fx:id="txtFieldOutputFile" editable="false" layoutX="126.0" layoutY="39.0" prefHeight="25.0" prefWidth="262.0" promptText="Output file" />
+            <TextField fx:id="txtFieldInputFile" editable="true" layoutX="126.0" layoutY="2.0" onDragDropped="#inputFileDropped" prefHeight="25.0" prefWidth="262.0" promptText="Input file" />
+            <TextField fx:id="txtFieldOutputFile" editable="true" layoutX="126.0" layoutY="39.0" prefHeight="25.0" prefWidth="262.0" promptText="Output file" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="159.0" layoutY="285.0">

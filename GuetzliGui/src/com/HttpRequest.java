@@ -103,7 +103,7 @@ public class HttpRequest {
         if ((queryString.length() > 0) && (queryString.charAt(queryString.length() - 1) == '&')) {
             return '?' + queryString.substring(0, queryString.length() - 1);
         }
-        
+
         return '?' + queryString.toString();
     }
 }

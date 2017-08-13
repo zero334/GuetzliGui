@@ -65,6 +65,15 @@ public class MainGuiController implements Initializable {
         RegisterTransferMode.registerMode(txtFieldInputFile);
 
         radioLanguageEnglish.setSelected(true);
+
+
+        // Add event listeners
+        txtFieldInputFile.textProperty().addListener((observable, oldValue, newValue) -> {
+            userValueStore.setInput(new File(newValue));
+        });
+        txtFieldOutputFile.textProperty().addListener((observable, oldValue, newValue) -> {
+            userValueStore.setOutput(new File(newValue));
+        });
     }
 
     @FXML
@@ -158,8 +167,17 @@ public class MainGuiController implements Initializable {
         guetzliPage.openSite();
     }
 
+
     @FXML
     void startEncodeing(ActionEvent event) {
+
+
+        if (!userValueStore.isComplete()) {
+            // Maybe user has c&p the path
+            userValueStore.setInput(new File(txtFieldInputFile.getText()));
+            userValueStore.setOutput(new File(txtFieldOutputFile.getText()));
+        }
+
 
         if (!userValueStore.isComplete()) {
 
@@ -212,7 +230,7 @@ public class MainGuiController implements Initializable {
 
             final String qualityString = "--quality " + userValueStore.getQuality();
             final String input = userValueStore.getInput().getAbsolutePath();
-            final String output = userValueStore.getInput().getAbsolutePath();
+            final String output = userValueStore.getOutput().getAbsolutePath();
 
             final CommandLine cmdLine = CommandLine.parse(guetzliPath + ' ' + qualityString + ' ' + input + ' ' + output);
 
