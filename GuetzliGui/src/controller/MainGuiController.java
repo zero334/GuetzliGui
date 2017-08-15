@@ -230,7 +230,10 @@ public class MainGuiController implements Initializable {
 
             final String qualityString = "--quality " + userValueStore.getQuality();
             final String input = userValueStore.getInput().getAbsolutePath();
-            final String output = userValueStore.getOutput().getAbsolutePath();
+            String output = userValueStore.getOutput().getAbsolutePath();
+            if (!output.endsWith(".jpg") && !output.endsWith(".jpeg")) {
+                output += ".jpg";
+            }
 
             final CommandLine cmdLine = CommandLine.parse(guetzliPath + ' ' + qualityString + ' ' + input + ' ' + output);
 
