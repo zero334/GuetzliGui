@@ -216,7 +216,7 @@ public class MainGuiController implements Initializable {
                 binaryName = "guetzli_windows_x86.exe";
             }
 
-            final String guetzliPath = ClassLoader.getSystemClassLoader().getResource(".").getPath() + binaryName;
+            final String guetzliPath = Utils.getExecPath() + binaryName;
 
             while (! new File(guetzliPath).exists()) {
                 final Optional<ButtonType> redownloadGuetzli = Utils.alertBox("Guetzli not found", "Guetzli was not found. Download Guetzli?", Alert.AlertType.CONFIRMATION);

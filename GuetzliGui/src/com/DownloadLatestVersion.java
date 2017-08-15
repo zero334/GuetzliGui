@@ -48,10 +48,7 @@ public class DownloadLatestVersion {
         }
 
         try {
-            final File pathOfRunningJar =  new File(DownloadLatestVersion.class.getProtectionDomain().getCodeSource().getLocation().toURI());
-            final String guetzliDownloadPath = pathOfRunningJar.getParent() + File.separator + binaryName;
-
-            System.out.println(guetzliDownloadPath);
+            final String guetzliDownloadPath = Utils.getExecPath() + binaryName;
             downloadFileFromURL(downloadLink, new File(guetzliDownloadPath));
 
         } catch (Throwable throwable) {

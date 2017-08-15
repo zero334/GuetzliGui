@@ -10,6 +10,7 @@ import javax.imageio.ImageIO;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.Optional;
 
 /**
@@ -96,5 +97,17 @@ public class Utils {
         alert.setHeaderText(null);
 
         return  alert.showAndWait();
+    }
+
+    public static String getExecPath() {
+        try {
+            final String javaAbsolutePath = new File(Utils.class.getProtectionDomain().getCodeSource().getLocation().toURI().getPath()).getAbsolutePath();
+            if (!javaAbsolutePath.isEmpty()) {
+                return javaAbsolutePath.substring(0, javaAbsolutePath.lastIndexOf(File.separator)) + File.separator;
+            }
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 }
