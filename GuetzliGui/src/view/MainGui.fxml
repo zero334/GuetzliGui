@@ -13,12 +13,6 @@
                   <MenuItem onAction="#checkForUpdate" mnemonicParsing="false" text="Check for update" />
             </items>
           </Menu>
-            <Menu mnemonicParsing="false" text="Language">
-              <items>
-                  <RadioMenuItem fx:id="radioLanguageEnglish" mnemonicParsing="false" onAction="#changeGuiLangToEnglish" text="English" />
-                  <RadioMenuItem fx:id="radioLanguageGerman" mnemonicParsing="false" onAction="#changeGuiLangToGerman" text="German" />
-              </items>
-            </Menu>
           <Menu mnemonicParsing="false" text="Help">
             <items>
                 <MenuItem onAction="#openAboutWindow" mnemonicParsing="false" text="About" />
@@ -46,12 +40,12 @@
       </AnchorPane>
       <AnchorPane layoutX="159.0" layoutY="285.0">
          <children>
-            <Button fx:id="btnStartEncode" layoutY="4.5576934814453125" mnemonicParsing="false" onAction="#startEncodeing" prefHeight="25.0" prefWidth="114.0" text="Encode">
+            <Button fx:id="btnStartEncode" layoutY="4.5576934814453125" mnemonicParsing="false" onAction="#startEncoding" prefHeight="25.0" prefWidth="114.0" text="Encode">
                 <cursor>
                     <Cursor fx:constant="HAND" />
                 </cursor>
             </Button>
-            <ProgressIndicator fx:id="progIndEncodeingProgress" layoutX="120.0" layoutY="4.5576934814453125" prefHeight="25.0" prefWidth="24.0" visible="false" />
+            <ProgressIndicator fx:id="progressIndEncodingProgress" layoutX="120.0" layoutY="4.5576934814453125" prefHeight="25.0" prefWidth="24.0" visible="false" />
          </children>
       </AnchorPane>
       <AnchorPane layoutX="21.0" layoutY="155.0">
@@ -67,7 +61,7 @@
                  <Integer fx:id="max" fx:value="100"/>
                  <Integer fx:id="initialValue" fx:value="84"/>
              </fx:define>
-            <Spinner fx:id="spnEncodeingQuality" editable="true" layoutX="46.0" prefHeight="25.0" prefWidth="59.0" min="$min" max="$max" initialValue="$initialValue"/>
+            <Spinner fx:id="spnEncodingQuality" editable="true" layoutX="46.0" prefHeight="25.0" prefWidth="59.0" min="$min" max="$max" initialValue="$initialValue"/>
          </children>
       </AnchorPane>
    </children>

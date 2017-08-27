@@ -22,14 +22,11 @@ import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.List;
-import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class MainGuiController implements Initializable {
 
-    private ResourceBundle bundle;
-    private Locale locale;
     private UserValueStore userValueStore = new UserValueStore();
 
     @FXML
@@ -42,30 +39,22 @@ public class MainGuiController implements Initializable {
     private Button btnStartEncode;
 
     @FXML
-    private ProgressIndicator progIndEncodeingProgress;
+    private ProgressIndicator progressIndEncodingProgress;
 
     @FXML
     private ListView<String> lstViewImageProperties;
 
     @FXML
-    private Spinner<Integer> spnEncodeingQuality;
-
-    @FXML
-    private RadioMenuItem radioLanguageEnglish, radioLanguageGerman;
-
+    private Spinner<Integer> spnEncodingQuality;
 
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         System.out.println("Start!");
-        IntegerStringConverter.createFor(spnEncodeingQuality);
-        // TODO Write config
+        IntegerStringConverter.createFor(spnEncodingQuality);
 
         RegisterTransferMode.registerMode(btnInputFile);
         RegisterTransferMode.registerMode(txtFieldInputFile);
-
-        radioLanguageEnglish.setSelected(true);
-
 
         // Add event listeners
         txtFieldInputFile.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -76,15 +65,6 @@ public class MainGuiController implements Initializable {
         });
     }
 
-    @FXML
-    void changeGuiLangToEnglish(ActionEvent event) {
-
-    }
-
-    @FXML
-    void changeGuiLangToGerman(ActionEvent event) {
-
-    }
 
     @FXML
     void inputFileDropped(final DragEvent event) {
@@ -144,9 +124,10 @@ public class MainGuiController implements Initializable {
     void openAboutWindow(ActionEvent event) {
         Parent root;
         try {
-            root = FXMLLoader.load(Main.class.getResource("../view/About.fxml"));
+            root = FXMLLoader.load(Main.class.getResource("/view/About.fxml"));
             Stage stage = new Stage();
             stage.setTitle("About");
+            stage.setResizable(false);
             stage.setScene(new Scene(root));
             stage.show();
         }
@@ -169,15 +150,13 @@ public class MainGuiController implements Initializable {
 
 
     @FXML
-    void startEncodeing(ActionEvent event) {
-
+    void startEncoding(ActionEvent event) {
 
         if (!userValueStore.isComplete()) {
             // Maybe user has c&p the path
             userValueStore.setInput(new File(txtFieldInputFile.getText()));
             userValueStore.setOutput(new File(txtFieldOutputFile.getText()));
         }
-
 
         if (!userValueStore.isComplete()) {
 
@@ -239,8 +218,8 @@ public class MainGuiController implements Initializable {
 
             final Executor executor = new DefaultExecutor();
             btnStartEncode.setDisable(true);
-            progIndEncodeingProgress.setVisible(true);
-            final DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progIndEncodeingProgress);
+            progressIndEncodingProgress.setVisible(true);
+            final DefaultExecuteResultHandler resultHandler = new PrintResultHandler(btnStartEncode, progressIndEncodingProgress);
 
             try {
                 executor.execute(cmdLine, resultHandler);
@@ -248,21 +227,6 @@ public class MainGuiController implements Initializable {
                 System.err.println(ex.getMessage());
             }
         }
-    }
-
-
-    private void loadLangGer() {
-        this.loadLang("ger");
-    }
-
-    private void loadLangEn() {
-        this.loadLang("en");
-    }
-
-    void loadLang(final String lang) {
-        locale = new Locale(lang);
-        bundle = ResourceBundle.getBundle("languages.language", locale);
-        // label.setText(bundle.getString("label"));
     }
 
     public void checkForUpdate(ActionEvent actionEvent) {

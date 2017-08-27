@@ -3,6 +3,7 @@ package com;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
@@ -34,6 +35,10 @@ public class Main extends Application {
             primaryStage.setScene(scene);
             primaryStage.setResizable(false);
             primaryStage.show();
+
+            if (!Utils.getOsType().equals("Windows")) {
+                Utils.alertBox("Not supported operating system found", "Your operating system is not yet supported by GuetzliGui!", Alert.AlertType.WARNING);
+            }
 
         } catch (final Exception ex) {
             ex.printStackTrace();
