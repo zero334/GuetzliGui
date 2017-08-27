@@ -76,13 +76,20 @@ public class Utils {
 
         final double estimatedTime = megaPixel;
         final int memoryUsage = (int)(megaPixel * 300); // In MB
+        
+        String memoryUsageString = memoryUsage + " MB";
+        // Use GB instead of MB for the memory usage for very high resolution pictures
+        if (memoryUsage > 1024) {
+            final float memoryUsageInGb = memoryUsage / 1024.0f;
+            memoryUsageString = Math.round(memoryUsageInGb * 100) / 100d + " GB";
+        }
 
         final ObservableList<String> items = FXCollections.observableArrayList (
                 "Image Width: " + width + "px",
                 "Image Height: " + height + "px",
                 "Megapixel(s): " + megaPixel,
                 "Estimated time: " + estimatedTime + " Minutes",
-                "Memory usage: " + memoryUsage + " MB");
+                "Memory usage: " + memoryUsageString);
 
         displayContainer.setItems(items);
     }
