@@ -3,6 +3,7 @@ A simple GUI for Google's JPEG encoder [Guetzli](https://github.com/google/guetz
 
 ## Requirements
 A installed Java Runtime Environment (JRE) version 8 or greater.
+At the moment only Windows is supported.
 
 ## Contribution
 Feel free to add your code to the project.<br />
